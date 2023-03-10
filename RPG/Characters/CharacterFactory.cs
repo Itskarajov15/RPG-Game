@@ -1,12 +1,10 @@
-﻿using RPG.Characters;
-
-namespace RPG
+﻿namespace RPG.Characters
 {
     public static class CharacterFactory
     {
         public static Character CreateCharacter(string characterType)
         {
-            if (characterType == "Warrior") 
+            if (characterType == "Warrior")
             {
                 return new Warrior();
             }

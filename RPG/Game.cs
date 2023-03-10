@@ -1,5 +1,4 @@
 ﻿using RPG.Characters;
-using System.Threading;
 
 namespace RPG
 {
@@ -228,6 +227,12 @@ namespace RPG
             if (!IsValid(row, col))
             {
                 Console.WriteLine("You cannot exit the field!");
+                return (oldRow, oldCol);
+            }
+
+            if (this.field[row, col] != '▒')
+            {
+                Console.WriteLine("Invalid step.");
                 return (oldRow, oldCol);
             }
 
