@@ -1,5 +1,5 @@
 ﻿using RPG.Characters;
-using System;
+using System.Threading;
 
 namespace RPG
 {
@@ -40,11 +40,14 @@ namespace RPG
 
                 switch (action.ToUpper())
                 {
-                    case "ATTACK": AttackController();
+                    case "ATTACK":
+                        AttackController();
                         break;
-                    case "MOVE": MoveController();
+                    case "MOVE":
+                        MoveController();
                         break;
-                    default: Console.WriteLine("Invalid action");
+                    default:
+                        Console.WriteLine("Invalid action");
                         break;
                 }
 
@@ -148,9 +151,15 @@ namespace RPG
         {
             var monster = CharacterFactory.CreateCharacter("Monster");
 
-            if (this.field[monster.Row, monster.Col] == 'M' || this.field[monster.Row, monster.Col] == this.Character.Symbol)
+            if (this.field[monster.Row, monster.Col] != '▒')
             {
-                return;
+                var rand = new Random();
+
+                while (this.field[monster.Row, monster.Col] != '▒')
+                {
+                    monster.Row = rand.Next(0, 10);
+                    monster.Col = rand.Next(0, 10);
+                }
             }
 
             this.monsters.Add(monster);
@@ -174,35 +183,30 @@ namespace RPG
         {
             foreach (var monster in this.monsters)
             {
-                int distance = Math.Max(Math.Abs(monster.Row - this.Character.Row), Math.Abs(monster.Col - this.Character.Col));
+                var row = monster.Row;
+                var col = monster.Col;
 
-                if (distance <= monster.Range)
-                {
-                    Attack(monster, this.Character);
-                    continue;
-                }
+                var nextRow = Math.Sign(this.Character.Row - row);
+                var nextCol = Math.Sign(this.Character.Col - col);
 
-                this.field[monster.Row, monster.Col] = '▒';
+                if (IsValid(row + nextRow, col + nextCol) && this.field[row + nextRow, col + nextCol] == '▒')
+                {
+                    this.field[row, col] = '▒';
 
-                if (monster.Row < this.Character.Row)
-                {
-                    monster.Row++;
-                }
-                else if (monster.Row > this.Character.Row)
-                {
-                    monster.Row--;
-                }
+                    monster.Row += nextRow;
+                    monster.Col += nextCol;
 
-                if (monster.Col < this.Character.Col)
-                {
-                    monster.Col++;
+                    this.field[monster.Row, monster.Col] = 'M';
                 }
-                else if (monster.Col > this.Character.Col)
+                else
                 {
-                    monster.Col--;
-                }
+                    int distance = FindDistance(monster.Row, monster.Col, this.Character.Row, this.Character.Col);
 
-                this.field[monster.Row, monster.Col] = monster.Symbol;
+                    if (distance <= monster.Range)
+                    {
+                        Attack(monster, this.Character);
+                    }
+                }
             }
         }
 
@@ -242,7 +246,7 @@ namespace RPG
 
             foreach (var monster in this.monsters)
             {
-                int distance = Math.Max(Math.Abs(this.Character.Row - monster.Row), Math.Abs(this.Character.Col - monster.Col));
+                int distance = FindDistance(this.Character.Row, this.Character.Col, monster.Row, monster.Col);
 
                 if (distance <= this.Character.Range)
                 {
@@ -252,5 +256,8 @@ namespace RPG
 
             return monstersInRange;
         }
+
+        private int FindDistance(int attackerRow, int attackerCol, int targetRow, int targetCol)
+            => Math.Max(Math.Abs(attackerRow - targetRow), Math.Abs(attackerCol - targetCol));
     }
 }
