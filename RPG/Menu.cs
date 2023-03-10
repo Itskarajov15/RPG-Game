@@ -1,4 +1,5 @@
 ﻿using RPG.Characters;
+using System.Runtime.CompilerServices;
 
 namespace RPG
 {
@@ -32,75 +33,94 @@ namespace RPG
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
-                return CharacterSelectMenu();
+                Console.WriteLine("Invalid type. Your character will be Warrior.");
+                typeNumber = 1;
             }
 
-            Console.Clear();
             return ((CharacterTypes)typeNumber).ToString();
         }
 
-        //public void OptionMenu()
-        //{
-        //    Console.WriteLine("Would you like to buff up your stats before starting?");
-        //    Console.Write("Y\\N: ");
-        //    var response = Console.ReadLine();
+        public static void OptionMenu(Character character)
+        {
+            Console.WriteLine("Would you like to buff up your stats before starting?");
+            Console.Write("Response Y\\N: ");
 
-        //    if (response == "Y")
-        //    {
-        //        var remainingPoints = 3;
+            var response = Console.ReadLine();
 
-        //        while (remainingPoints > 0)
-        //        {
-        //            Console.WriteLine("Strenght");
-        //            Console.WriteLine("Agility");
-        //            Console.WriteLine("Intelligence");
-        //            Console.Write("Choose stats: ");
-        //            var stat = Console.ReadLine();
+            if (response.ToUpper() == "Y")
+            {
+                BuffStats(character);
+            }
+        }
 
-        //            Console.Write("Enter points: ");
-        //            var points = int.Parse(Console.ReadLine());
+        private static void BuffStats(Character character)
+        {
+            var pointsLeft = 3;
+            var strength = false;
+            var agility = false;
+            var intelligence = false;
 
-        //            if (points > remainingPoints)
-        //            {
-        //                Console.WriteLine("Invalid points");
-        //                continue;
-        //            }
+            while (pointsLeft > 0)
+            {
+                if (!strength)
+                {
+                    Console.WriteLine("Strength");
+                }
 
-        //            if (stat == "Strength")
-        //            {
-        //                character.Strength += points;
-        //                Console.WriteLine($"Current Strength: {character.Strength}");
-        //            }
-        //            else if (stat == "Agility")
-        //            {
-        //                character.Agility += points;
-        //                Console.WriteLine($"Current Agility: {character.Agility}");
-        //            }
-        //            else if (stat == "Intelligence")
-        //            {
-        //                character.Intelligence += points;
-        //                Console.WriteLine($"Current Intelligence: {character.Intelligence}");
-        //            }
-        //            else
-        //            {
-        //                Console.WriteLine("Invalid selected option. The stats of your character will not be buffed.");
-        //                return;
-        //            }
+                if (!agility)
+                {
+                    Console.WriteLine("Agility");
+                }
 
-        //            remainingPoints -= points;
-        //        }
-        //    }
-        //    else if (response == "N")
-        //    {
-        //        Console.WriteLine("Okay! The stats of your character will not be buffed.");
-        //    }
-        //    else
-        //    {
-        //        Console.WriteLine("Invalid selected option. The stats of your character will not be buffed.");
-        //    }
+                if (!intelligence) 
+                {
+                    Console.WriteLine("Intelligence");
+                }
 
-        //    Console.Clear();
-        //}
+                Console.Write("Select stat: ");
+                var response = Console.ReadLine().ToUpper();
+
+                var points = 0;
+
+                try
+                {
+                    points = int.Parse(Console.ReadLine());
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Invalid points.");
+                    continue;
+                }
+
+                if (points > pointsLeft)
+                {
+                    Console.WriteLine("You do not have enough points");
+                    continue;
+                }
+
+                if (response == "STRENGTH" && !strength)
+                {
+                    character.Strength += points;
+                    strength = true;
+                    pointsLeft -= points;
+                }
+                else if (response == "AGILITY" && !agility)
+                {
+                    character.Agility += points;
+                    agility = true;
+                    pointsLeft -= points;
+                }
+                else if (response == "INTELLIGENCE" && !intelligence)
+                {
+                    character.Intelligence += points;
+                    intelligence = true;
+                    pointsLeft -= points;
+                }
+                else
+                {
+                    Console.WriteLine("Invalid option");
+                }
+            }
+        }
     }
 }
