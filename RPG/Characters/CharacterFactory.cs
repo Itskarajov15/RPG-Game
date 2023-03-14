@@ -2,29 +2,25 @@
 {
     public static class CharacterFactory
     {
-        public static Character CreateCharacter(string characterType)
+        public static Character CreateCharacter(CharacterTypes characterType)
         {
-            if (characterType == "Warrior")
+            if (characterType == CharacterTypes.Warrior)
             {
                 return new Warrior();
             }
-            else if (characterType == "Archer")
+            else if (characterType == CharacterTypes.Archer)
             {
                 return new Archer();
             }
-            else if (characterType == "Mage")
+            else if (characterType == CharacterTypes.Mage)
             {
                 return new Mage();
             }
-            else if (characterType == "Monster")
+            else
             {
                 var random = new Random();
 
                 return new Monster(random.Next(1, 4), random.Next(1, 4), random.Next(1, 4), random.Next(0, 10), random.Next(0, 10));
-            }
-            else
-            {
-                return null;
             }
         }
     }

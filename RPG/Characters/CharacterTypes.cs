@@ -4,6 +4,7 @@
     {
         Warrior = 1,
         Archer = 2,
-        Mage = 3
+        Mage = 3,
+        Monster = 4
     }
 }

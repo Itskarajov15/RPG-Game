@@ -13,7 +13,7 @@ namespace RPG
             Console.Clear();
         }
 
-        public static string CharacterSelectMenu()
+        public static CharacterTypes CharacterSelectMenu()
         {
             Console.WriteLine("Options: ");
 
@@ -37,7 +37,7 @@ namespace RPG
                 typeNumber = 1;
             }
 
-            return ((CharacterTypes)typeNumber).ToString();
+            return (CharacterTypes)typeNumber;
         }
 
         public static void OptionMenu(Character character)
