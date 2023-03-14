@@ -19,11 +19,6 @@ namespace RPG
 
             var index = 1;
 
-            //foreach (var type in (CharacterTypes[])Enum.GetValues(typeof(CharacterTypes)))
-            //{
-            //    Console.WriteLine($"{index++}) {type}");
-            //}
-
             for (int i = 1; i <= 3; i++)
             {
                 Console.WriteLine($"{index++}) {(CharacterTypes)i}");
@@ -64,6 +59,8 @@ namespace RPG
 
             while (pointsLeft > 0)
             {
+                Console.WriteLine($"Points left: {pointsLeft}");
+
                 (pointsLeft, var strengthPoints) = AddPoints(pointsLeft, nameof(character.Strength));
 
                 character.Strength += strengthPoints;
@@ -74,6 +71,8 @@ namespace RPG
                     return;
                 }
 
+                Console.WriteLine($"Points left: {pointsLeft}");
+
                 (pointsLeft, var agilityPoints) = AddPoints(pointsLeft, nameof(character.Agility));
 
                 character.Agility += agilityPoints;
@@ -83,6 +82,8 @@ namespace RPG
                     Console.WriteLine("You have used all of your points.");
                     return;
                 }
+
+                Console.WriteLine($"Points left: {pointsLeft}");
 
                 (pointsLeft, var intelligencePoints) = AddPoints(pointsLeft, nameof(character.Intelligence));
 
