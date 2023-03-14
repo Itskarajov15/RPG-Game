@@ -15,26 +15,39 @@ namespace RPG
 
         public static CharacterTypes CharacterSelectMenu()
         {
-            Console.WriteLine("Options: ");
+            int typeNumber;
 
-            var index = 1;
-
-            for (int i = 1; i <= 3; i++)
+            while (true)
             {
-                Console.WriteLine($"{index++}) {(CharacterTypes)i}");
-            }
+                Console.WriteLine("Options: ");
 
-            int typeNumber = 0;
-            Console.Write("Choose character type: ");
+                var index = 1;
 
-            try
-            {
-                typeNumber = int.Parse(Console.ReadLine());
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Invalid type. Your character will be Warrior.");
-                typeNumber = 1;
+                for (int i = 1; i <= 3; i++)
+                {
+                    Console.WriteLine($"{index++}) {(CharacterTypes)i}");
+                }
+
+                Console.Write("Choose character type: ");
+                var typeNumberStr = Console.ReadLine();
+
+                var isValid = int.TryParse(typeNumberStr, out typeNumber);
+
+                if (!isValid)
+                {
+                    Console.WriteLine("Invalid input. The input must be an integer.");
+                    continue;
+                }
+
+                if (typeNumber > 3 || typeNumber < 1)
+                {
+                    Console.WriteLine("Invalid type.");
+                    continue;
+                }
+                else
+                {
+                    break;
+                }
             }
 
             return (CharacterTypes)typeNumber;
