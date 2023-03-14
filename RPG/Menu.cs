@@ -19,9 +19,14 @@ namespace RPG
 
             var index = 1;
 
-            foreach (var type in (CharacterTypes[])Enum.GetValues(typeof(CharacterTypes)))
+            //foreach (var type in (CharacterTypes[])Enum.GetValues(typeof(CharacterTypes)))
+            //{
+            //    Console.WriteLine($"{index++}) {type}");
+            //}
+
+            for (int i = 1; i <= 3; i++)
             {
-                Console.WriteLine($"{index++}) {type}");
+                Console.WriteLine($"{index++}) {(CharacterTypes)i}");
             }
 
             int typeNumber = 0;
@@ -49,78 +54,70 @@ namespace RPG
 
             if (response.ToUpper() == "Y")
             {
-                BuffStats(character);
+                AddStats(character);
             }
         }
 
-        private static void BuffStats(Character character)
+        private static void AddStats(Character character)
         {
             var pointsLeft = 3;
-            var strength = false;
-            var agility = false;
-            var intelligence = false;
 
             while (pointsLeft > 0)
             {
-                if (!strength)
+                (pointsLeft, var strengthPoints) = AddPoints(pointsLeft, nameof(character.Strength));
+
+                character.Strength += strengthPoints;
+
+                if (pointsLeft <= 0)
                 {
-                    Console.WriteLine("Strength");
+                    Console.WriteLine("You have used all of your points.");
+                    return;
                 }
 
-                if (!agility)
+                (pointsLeft, var agilityPoints) = AddPoints(pointsLeft, nameof(character.Agility));
+
+                character.Agility += agilityPoints;
+
+                if (pointsLeft <= 0)
                 {
-                    Console.WriteLine("Agility");
+                    Console.WriteLine("You have used all of your points.");
+                    return;
                 }
 
-                if (!intelligence) 
-                {
-                    Console.WriteLine("Intelligence");
-                }
+                (pointsLeft, var intelligencePoints) = AddPoints(pointsLeft, nameof(character.Intelligence));
 
-                Console.Write("Select stat: ");
-                var response = Console.ReadLine().ToUpper();
-
-                var points = 0;
-
-                try
-                {
-                    points = int.Parse(Console.ReadLine());
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine("Invalid points.");
-                    continue;
-                }
-
-                if (points > pointsLeft)
-                {
-                    Console.WriteLine("You do not have enough points");
-                    continue;
-                }
-
-                if (response == "STRENGTH" && !strength)
-                {
-                    character.Strength += points;
-                    strength = true;
-                    pointsLeft -= points;
-                }
-                else if (response == "AGILITY" && !agility)
-                {
-                    character.Agility += points;
-                    agility = true;
-                    pointsLeft -= points;
-                }
-                else if (response == "INTELLIGENCE" && !intelligence)
-                {
-                    character.Intelligence += points;
-                    intelligence = true;
-                    pointsLeft -= points;
-                }
-                else
-                {
-                    Console.WriteLine("Invalid option");
-                }
+                character.Intelligence += intelligencePoints;
             }
+        }
+
+        private static (int, int) AddPoints(int pointsLeft, string statName)
+        {
+            int points;
+
+            while (true)
+            {
+                Console.Write($"{statName}: ");
+                var inputPoints = Console.ReadLine();
+                var isValid = int.TryParse(inputPoints, out points);
+
+                if (!isValid)
+                {
+                    Console.WriteLine("Invalid input. Please enter an integer.");
+                    continue;
+                }
+
+                if (pointsLeft < points)
+                {
+                    Console.WriteLine($"You do not have enough points. Points left: {pointsLeft}");
+                    continue;
+                }
+
+                pointsLeft -= points;
+
+                break;
+            }
+
+            return (pointsLeft, points);
         }
     }
 }

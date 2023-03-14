@@ -148,7 +148,7 @@ namespace RPG
 
         private void SpawnMonster()
         {
-            var monster = CharacterFactory.CreateCharacter("Monster");
+            var monster = CharacterFactory.CreateCharacter(CharacterTypes.Monster);
 
             if (this.field[monster.Row, monster.Col] != '▒')
             {
