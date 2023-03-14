@@ -31,23 +31,28 @@ namespace RPG
                 Console.WriteLine($"Health: {this.Character.Health}  Mana: {this.Character.Mana}");
                 PrintField();
 
-                Console.WriteLine(@"Attack");
-                Console.WriteLine("Move");
-                Console.Write("Choose action: ");
-
-                var action = Console.ReadLine();
-
-                switch (action.ToUpper())
+                while (true)
                 {
-                    case "ATTACK":
+                    Console.WriteLine(@"Attack");
+                    Console.WriteLine("Move");
+                    Console.Write("Choose action: ");
+
+                    var action = Console.ReadLine();
+
+                    if (action.ToUpper() == "ATTACK")
+                    {
                         AttackController();
                         break;
-                    case "MOVE":
+                    }
+                    else if (action.ToUpper() == "MOVE")
+                    {
                         MoveController();
                         break;
-                    default:
+                    }
+                    else
+                    {
                         Console.WriteLine("Invalid action");
-                        break;
+                    }
                 }
 
                 if (this.Character.Health <= 0)
@@ -112,37 +117,64 @@ namespace RPG
 
         private void MoveController()
         {
-            var command = Console.ReadLine();
-
-            switch (command.ToUpper())
+            while (true)
             {
-                case "W":
+                Console.WriteLine("W - Move up");
+                Console.WriteLine("S - Move down");
+                Console.WriteLine("D - Move rigth");
+                Console.WriteLine("A - Move left");
+                Console.WriteLine("E - Move diagonally up & rigth");
+                Console.WriteLine("X - Move diagonally down & rigth");
+                Console.WriteLine("Q - Move diagonally up & left");
+                Console.WriteLine("Z - Move diagonally down & left");
+
+                Console.Write("Chose an option: ");
+                var command = Console.ReadLine();
+
+                if (command.ToUpper() == "W")
+                {
                     (this.Character.Row, this.Character.Col) = MoveCharacter(this.Character.Row, this.Character.Col, this.Character.Row - 1, this.Character.Col);
                     break;
-                case "S":
+                }
+                else if (command.ToUpper() == "S")
+                {
                     (this.Character.Row, this.Character.Col) = MoveCharacter(this.Character.Row, this.Character.Col, this.Character.Row + 1, this.Character.Col);
                     break;
-                case "D":
+                }
+                else if (command.ToUpper() == "D")
+                {
                     (this.Character.Row, this.Character.Col) = MoveCharacter(this.Character.Row, this.Character.Col, this.Character.Row, this.Character.Col + 1);
                     break;
-                case "A":
+                }
+                else if (command.ToUpper() == "A")
+                {
                     (this.Character.Row, this.Character.Col) = MoveCharacter(this.Character.Row, this.Character.Col, this.Character.Row, this.Character.Col - 1);
                     break;
-                case "E":
+                }
+                else if (command.ToUpper() == "E")
+                {
                     (this.Character.Row, this.Character.Col) = MoveCharacter(this.Character.Row, this.Character.Col, this.Character.Row - 1, this.Character.Col + 1);
                     break;
-                case "X":
+                }
+                else if (command.ToUpper() == "X")
+                {
                     (this.Character.Row, this.Character.Col) = MoveCharacter(this.Character.Row, this.Character.Col, this.Character.Row + 1, this.Character.Col + 1);
                     break;
-                case "Q":
+                }
+                else if (command.ToUpper() == "Q")
+                {
                     (this.Character.Row, this.Character.Col) = MoveCharacter(this.Character.Row, this.Character.Col, this.Character.Row - 1, this.Character.Col - 1);
                     break;
-                case "Z":
+                }
+                else if (command.ToUpper() == "Z")
+                {
                     (this.Character.Row, this.Character.Col) = MoveCharacter(this.Character.Row, this.Character.Col, this.Character.Row + 1, this.Character.Col - 1);
                     break;
-                default:
+                }
+                else
+                {
                     Console.WriteLine($"The command {command} is invalid. Please enter a valid command.");
-                    break;
+                }
             }
         }
 
